@@ -29,7 +29,11 @@ const Login = ({navigation}) => {
         if (data.success) {
           setIsAuthenticated(true);
           Alert.alert("Giriş Başarılı", "Hoş geldiniz!");
-          navigation.navigate("Home");
+          if(data.role === "admin") {
+            navigation.navigate("AdminHome");
+          } else {
+            navigation.navigate("Home");
+          }
         } else {
           Alert.alert("Hata", data.message || "Giriş başarısız");
         }
@@ -43,7 +47,7 @@ const Login = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../../components/ata_icon.png")}
+        source={require("../../components/images/ata_icon.png")}
         style={styles.logo}
       />
       <View style={styles.titleContainer}>

@@ -84,10 +84,11 @@ export default StyleSheet.create({
   },
   detail: {
     backgroundColor: "#170242ff",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+
     borderRadius: 8,
     marginTop: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
@@ -104,6 +105,4 @@ export default StyleSheet.create({
     fontWeight: "600",
     textAlign: "center",
   },
-
-
 });

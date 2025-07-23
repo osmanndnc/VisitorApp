@@ -15,7 +15,7 @@ const Home = ({ navigation }) => {
   }, []);
 
   const getData = () => {
-    fetch("http://10.102.0.127/VISITORSYSTEM/getData.php")
+    fetch("http://10.90.200.53/VISITORSYSTEM/getData.php")
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -49,7 +49,7 @@ const Home = ({ navigation }) => {
                   <Text style={styles.value}>{item.phone}</Text>
                 </View>
                 <View style={styles.column}>
-                  <Text style={styles.label}>Türü:</Text>
+                  <Text style={styles.label}>Plaka:</Text>
                   <Text style={styles.value}>{item.plate}</Text>
                 </View>
               </View>
@@ -62,7 +62,7 @@ const Home = ({ navigation }) => {
       </View>
 
       <View style={styles.buttonArea}>
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity style={styles.addButton} onPress={() =>navigation.navigate("AddVisitor")}>
           <Text style={styles.addButtonText}>YENİ ZİYARETÇİ EKLE</Text>
         </TouchableOpacity>
       </View>
