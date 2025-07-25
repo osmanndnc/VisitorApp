@@ -9,15 +9,15 @@ import {
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import styles from "./Login.style"
+import styles from "./Login.style";
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const { setIsAuthenticated, user, setUser } = useContext(AuthContext);
 
   const handleLogin = () => {
-    fetch("http://10.102.0.127/VISITORSYSTEM/login.php", {
+    fetch("http://10.90.200.53/VisitorSystem/login.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,13 +27,16 @@ const Login = ({navigation}) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
+          console.log('====================================');
+          console.log(data);
+          console.log('====================================');
+          setUser({
+            id: data.id,
+            username: data.username,
+            role: data.role,
+          });
           setIsAuthenticated(true);
           Alert.alert("Giriş Başarılı", "Hoş geldiniz!");
-          if(data.role === "admin") {
-            navigation.navigate("AdminHome");
-          } else {
-            navigation.navigate("Home");
-          }
         } else {
           Alert.alert("Hata", data.message || "Giriş başarısız");
         }
@@ -51,13 +54,8 @@ const Login = ({navigation}) => {
         style={styles.logo}
       />
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>
-          Atatürk Üniversitesi
-        </Text>
-        <Text style={styles.titleText}>
-          Elektronik Ziyaretçi Kayıt Sistemi
-        </Text>
-        
+        <Text style={styles.titleText}>Atatürk Üniversitesi</Text>
+        <Text style={styles.titleText}>Elektronik Ziyaretçi Kayıt Sistemi</Text>
       </View>
 
       <View style={styles.inputcontainer}>
@@ -84,4 +82,3 @@ const Login = ({navigation}) => {
 };
 
 export default Login;
-

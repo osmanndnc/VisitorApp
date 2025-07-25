@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./Home.style";
 const Home = ({ navigation }) => {
   const [data, setData] = useState([]);
-
+  const date = new Date();
   useEffect(() => {
     getData();
   }, []);
@@ -19,6 +19,7 @@ const Home = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         setData(data);
+        console.log("Ziyaretçi verileri:", data);
       });
   };
 
@@ -28,9 +29,7 @@ const Home = ({ navigation }) => {
 
       <View style={styles.listContainer}>
         <FlatList
-          data={data}
-          keyExtractor={(item) => item.id.toString()}
-          showsVerticalScrollIndicator={false}
+          data={data}rticalScrollIndicator={false}
           renderItem={({ item }) => (
             <View style={styles.itemContainer}>
               <View style={styles.row}>
@@ -53,17 +52,23 @@ const Home = ({ navigation }) => {
                   <Text style={styles.value}>{item.plate}</Text>
                 </View>
               </View>
-              <TouchableOpacity style={styles.detail} onPress={() => navigation.navigate("Detail", { item: item })}>
-                <Text style={styles.detailText}>Detaylar</Text>
-              </TouchableOpacity>
+              <TouchableOpacity style={styles.detail} onPress={() => navigation.navigate("Detail", { item
+       :         item })}>
+         
+                      <Text style={styles.detailText}>Detaylar</Text>
+      
+                      </TouchableOpacity>
             </View>
           )}
         />
       </View>
 
       <View style={styles.buttonArea}>
-        <TouchableOpacity style={styles.addButton} onPress={() =>navigation.navigate("AddVisitor")}>
-          <Text style={styles.addButtonText}>YENİ ZİYARETÇİ EKLE</Text>
+        <TouchableOpacity style={styles.addButton} onPress={() =>navigation.navigate("AddVisitor")}
+         >
+          <Text style=
+         {styles.addButtonText}>YENİ ZİYARETÇİ EKLE</Text>
+        
         </TouchableOpacity>
       </View>
     </View>

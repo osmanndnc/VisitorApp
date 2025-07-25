@@ -4,16 +4,56 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
-const addVisitor = () => {
+const AddVisitor = ({navigation}) => {
+  const { user } = useContext(AuthContext);
   const [name, setName] = useState("");
   const [tc_no, setTc_no] = useState("");
   const [tel_no, setTel_no] = useState("");
   const [plate, setPlate] = useState("");
   const [person_to_visit, setPerson_To_Visit] = useState("");
   const [purpose, setPurpose] = useState("");
+
+
+
+const handlerAddVisitor = async () => {
+  console.log("Kullanıcı bilgisi:", user); 
+  const visitorData = {
+    name,
+    tc_no,
+    tel_no,
+    plate,
+    person_to_visit,
+    purpose,
+    approved_by: user?.id || 1,
+  };
+  console.log("Gönderilen veri:", visitorData);
+   try {
+    const response = await fetch("http://10.90.200.53/VISITORSYSTEM/createData.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(visitorData),
+    });
+
+    const json = await response.json();
+    if (json.success) {
+      Alert.alert("Başarılı", json.message);
+      navigation.goBack();
+    } else {
+      Alert.alert("Hata", json.message);
+    }
+  } catch (error) {
+    console.error("İstek hatası:", error);
+    Alert.alert("Hata", "Sunucuya bağlanılamadı");
+  }
+};
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.header}>
@@ -44,6 +84,8 @@ const addVisitor = () => {
             value={tel_no}
             onChangeText={setTel_no}
             keyboardType="phone-pad"
+            maxLength={10}
+
           />
         </View>
 
@@ -52,6 +94,7 @@ const addVisitor = () => {
           <TextInput
             style={styles.input}
             value={plate}
+            maxLength={8}
             onChangeText={setPlate}
           />
         </View>
@@ -77,7 +120,7 @@ const addVisitor = () => {
       </View>
 
       <View style={styles.buttonArea}>
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity style={styles.addButton} onPress={handlerAddVisitor}>
           <Text style={styles.addButtonText}>ZİYARETÇİ EKLE</Text>
         </TouchableOpacity>
       </View>
@@ -85,7 +128,7 @@ const addVisitor = () => {
   );
 };
 
-export default addVisitor;
+export default AddVisitor;
 
 const styles = StyleSheet.create({
   mainContainer: {

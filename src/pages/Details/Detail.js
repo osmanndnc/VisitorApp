@@ -8,16 +8,18 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 
+import styles from "./Detail.style";
+
 const Detail = ({ route, navigation }) => {
   const { item } = route.params;
   const [data, setData] = useState([]);
-
+  const date = new Date();
   useEffect(() => {
     detailData();
   }, []);
 
   const detailData = () => {
-    fetch("http://10.102.0.127/VISITORSYSTEM/dataDetail.php", {
+    fetch("http://10.90.200.53/VISITORSYSTEM/dataDetail.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,7 +29,6 @@ const Detail = ({ route, navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          
           setData(data.visits);
         } else {
           Alert.alert("Hata", data.message || "Detaylar alınamadı");
@@ -49,9 +50,7 @@ const Detail = ({ route, navigation }) => {
           <Text style={styles.backButtonText}>←</Text>
         </TouchableOpacity>
         <Text style={styles.header}>Ziyaretçi Detayları</Text>
-        <TouchableOpacity style={styles.deleteContainer}>
-          <Text style={styles.deleteText}>🗑️</Text>
-        </TouchableOpacity>
+        <View style={{ width: 40 }}></View>
       </View>
 
       <View style={styles.contentContainer}>
@@ -66,7 +65,10 @@ const Detail = ({ route, navigation }) => {
           <Text style={styles.subHeader}>Ziyaret Kayıtları</Text>
 
           <FlatList
-            data={data}//{data.filter(item => item.entry_time && item.entry_time.includes("2025-07-17"))}
+            data={data.filter(
+              (item) =>
+                item.entry_time && item.entry_time.includes(date.toISOString().split("T")[0])
+            )}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
               <View style={styles.visitBox}>
@@ -92,120 +94,3 @@ const Detail = ({ route, navigation }) => {
 
 export default Detail;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f8f9fa",
-    paddingTop: 50,
-    paddingHorizontal: 20,
-  },
-  headerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 30,
-  },
-  header: {
-    fontSize: 23,
-    fontWeight: "bold",
-    color: "#170242ff",
-    textAlign: "center",
-    flex: 1,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#170242ff",
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-  backButtonText: {
-    fontSize: 20,
-    color: "#fff",
-    fontWeight: "bold",
-    marginBottom:8,
-  },
-  deleteContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#ff4444",
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-  deleteText: {
-    fontSize: 18,
-    color: "#fff",
-  },
-  contentContainer: {
-    flex: 1,
-  },
-  visitSection: {
-    flex: 1,
-  },
-  flatList: {
-    flex: 1,
-  },
-  subHeader: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#170242ff",
-    marginBottom: 15,
-    textAlign: "center",
-  },
-  visitorBox: {
-    backgroundColor: "#ffffff",
-    padding: 20,
-    borderRadius: 12,
-    marginBottom: 20,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    borderLeftWidth: 4,
-    borderLeftColor: "#170242ff",
-  },
-  visitBox: {
-    backgroundColor: "#ffffff",
-    padding: 16,
-    borderRadius: 10,
-    marginBottom: 12,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.08,
-    shadowRadius: 3,
-    elevation: 2,
-    borderColor: "#e0e0e0",
-    borderWidth: 1,
-  },
-  detailRow: {
-    fontSize: 16,
-    marginBottom: 8,
-    color: "#333",
-    fontWeight: "500",
-  },
-});
