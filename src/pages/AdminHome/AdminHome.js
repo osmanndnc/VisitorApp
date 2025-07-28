@@ -5,14 +5,16 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./AdminHome.style";
+import { AuthContext } from "../../context/AuthContext";
 const AdminHome = ({ navigation }) => {
   const [data, setData] = useState([]);
-  
+  const {setIsAuthenticated}= useContext(AuthContext);
+
   useEffect(() => {
     getData();
-  }, []);
+  }, [data]);
 
   const getData = () => {
     fetch("http://10.90.200.53/VISITORSYSTEM/getData.php")
@@ -22,13 +24,15 @@ const AdminHome = ({ navigation }) => {
       });
   };
 
+
+
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.title}>Ziyaretçi Listesi</Text>
-
+      
       <View style={styles.listContainer}>
         <FlatList
-          data={data}//{data.filter(item => item.entry_time && item.entry_time.includes(date.toISOString().split("T")[0]))} // Günlük ziyaretçileri filtrele
+          data={data}//{data.filter(item => item.entry_time && item.entry_time.includes(date.toISOString().split("T")[0]))} // Günlük ziyaretçileri filtreleme
           keyExtractor={(item) => item.id.toString()}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
@@ -68,8 +72,10 @@ const AdminHome = ({ navigation }) => {
          <TouchableOpacity style={styles.addButton} onPress={() =>navigation.navigate("AddVisitor")}>
           <Text style={styles.addButtonText}>YENİ ZİYARETÇİ EKLE</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.addButton} onPress={() =>navigation.navigate("AddVisitor")}>
+        <TouchableOpacity style={styles.addButton} onPress={() =>navigation.navigate("GetReport")}>
           <Text style={styles.addButtonText}>RAPOR AL</Text>
+        </TouchableOpacity><TouchableOpacity style={styles.addButton} onPress={setIsAuthenticated.bind(null, false)}>
+          <Text style={styles.addButtonText}>ÇIKIŞ YAP</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -8,6 +8,7 @@ import AdminHome from '../pages/AdminHome/AdminHome';
 import AddVisitor from '../pages/addVisitor/AddVisitor';
 import { AuthContext } from '../context/AuthContext';
 import AddUser from '../pages/AddUser/AddUser';
+import GetReport from '../pages/Get/GetReport';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,7 @@ const UserStack = () => {
         <Stack.Screen name="AdminHome" component={AdminHome} />
         <Stack.Screen name ="AddVisitor" component={AddVisitor} />
         <Stack.Screen name="AddUser" component={AddUser} />
+       <Stack.Screen name='GetReport' component={GetReport}/>
     </Stack.Navigator>
 
 
