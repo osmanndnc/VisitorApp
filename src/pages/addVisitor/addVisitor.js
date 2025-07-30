@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   inputGroup: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   label: {
     fontSize: 16,

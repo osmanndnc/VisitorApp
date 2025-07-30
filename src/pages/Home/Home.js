@@ -29,7 +29,8 @@ const Home = ({ navigation }) => {
 
       <View style={styles.listContainer}>
         <FlatList
-          data={data}rticalScrollIndicator={false}
+          data={data.filter(item => item.entry_time && item.entry_time.includes(date.toISOString().split("T")[0]))}
+          verticalScrollIndicator={false}
           renderItem={({ item }) => (
             <View style={styles.itemContainer}>
               <View style={styles.row}>

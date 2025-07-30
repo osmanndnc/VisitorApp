@@ -6,14 +6,16 @@ import {
   Alert,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import styles from "./Detail.style";
+import { AuthContext } from "../../context/AuthContext";
 
 const Detail = ({ route, navigation }) => {
   const { item } = route.params;
   const [data, setData] = useState([]);
   const date = new Date();
+  const { user } = useContext(AuthContext);
   useEffect(() => {
     detailData();
   }, []);
@@ -65,10 +67,15 @@ const Detail = ({ route, navigation }) => {
           <Text style={styles.subHeader}>Ziyaret Kayıtları</Text>
 
           <FlatList
-            data={data.filter(
-              (item) =>
-                item.entry_time && item.entry_time.includes(date.toISOString().split("T")[0])
-            )}
+            data={
+              user.role == "security"
+                ? data.filter(
+                    (item) =>
+                      item.entry_time &&
+                      item.entry_time.includes(date.toISOString().split("T")[0])
+                  )
+                : data
+            }
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
               <View style={styles.visitBox}>
@@ -93,4 +100,3 @@ const Detail = ({ route, navigation }) => {
 };
 
 export default Detail;
-

@@ -8,6 +8,8 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./AdminHome.style";
 import { AuthContext } from "../../context/AuthContext";
+import Ionicons from "react-native-vector-icons/Ionicons";
+
 const AdminHome = ({ navigation }) => {
   const [data, setData] = useState([]);
   const {setIsAuthenticated}= useContext(AuthContext);
@@ -29,12 +31,23 @@ const AdminHome = ({ navigation }) => {
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.title}>Ziyaretçi Listesi</Text>
+      <TouchableOpacity style ={styles.filterArea}>
+   
+   <Ionicons name="funnel-outline"
+   size={22}
+   color={"#170242ff"} 
+   ></Ionicons>
+      </TouchableOpacity>
       
       <View style={styles.listContainer}>
         <FlatList
-          data={data}//{data.filter(item => item.entry_time && item.entry_time.includes(date.toISOString().split("T")[0]))} // Günlük ziyaretçileri filtreleme
+          data={data}
           keyExtractor={(item) => item.id.toString()}
           showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingBottom: 10, 
+            flexGrow: 1,
+          }}
           renderItem={({ item }) => (
             <View style={styles.itemContainer}>
               <View style={styles.row}>
@@ -65,19 +78,7 @@ const AdminHome = ({ navigation }) => {
         />
       </View>
 
-      <View style={styles.buttonArea}>
-         <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate("AddUser")}>
-          <Text style={styles.addButtonText}>KULLANICI EKLE</Text>
-        </TouchableOpacity>
-         <TouchableOpacity style={styles.addButton} onPress={() =>navigation.navigate("AddVisitor")}>
-          <Text style={styles.addButtonText}>YENİ ZİYARETÇİ EKLE</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.addButton} onPress={() =>navigation.navigate("GetReport")}>
-          <Text style={styles.addButtonText}>RAPOR AL</Text>
-        </TouchableOpacity><TouchableOpacity style={styles.addButton} onPress={setIsAuthenticated.bind(null, false)}>
-          <Text style={styles.addButtonText}>ÇIKIŞ YAP</Text>
-        </TouchableOpacity>
-      </View>
+    
     </View>
   );
 };

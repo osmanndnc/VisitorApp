@@ -36,7 +36,6 @@ const Login = ({ navigation }) => {
             role: data.role,
           });
           setIsAuthenticated(true);
-          Alert.alert("Giriş Başarılı", "Hoş geldiniz!");
         } else {
           Alert.alert("Hata", data.message || "Giriş başarısız");
         }

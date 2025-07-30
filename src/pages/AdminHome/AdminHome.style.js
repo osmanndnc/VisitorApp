@@ -5,18 +5,21 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: "#f8f9fa",
     padding: 16,
+    paddingBottom: 0,  
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     color: "#170242ff",
     textAlign: "center",
-    marginBottom: 30,
-    marginTop: 20,
+    marginBottom: 15,
+    marginTop: 20,  
+    paddingTop: 20,
   },
   listContainer: {
-    flex: 0.6,
-    marginBottom: 20,
+    flex: 1,
+    marginBottom: 0, 
+    
   },
   buttonArea: {
     flex: 0.4,
@@ -106,4 +109,10 @@ export default StyleSheet.create({
     fontWeight: "600",
     textAlign: "center",
   },
+  filterArea: {
+    marginBottom:10,
+    width:"8%",
+    alignItems:"center",
+
+  }
 });

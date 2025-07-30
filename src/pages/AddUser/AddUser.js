@@ -96,6 +96,9 @@ const AddUser = ({ navigation }) => {
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Kullanıcı Ekle</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={navigation.navigate("GetUser")}>
+          <Text style={styles.buttonText}>Kullanıcıları Listele</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
