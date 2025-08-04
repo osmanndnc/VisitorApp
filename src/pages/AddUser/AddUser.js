@@ -12,7 +12,9 @@ const AddUser = ({ navigation }) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
-
+  const [name, setName] = useState("");
+  const [tcNo, setTcNo] = useState();
+  const [telNo, setTelNo] = useState();
   const [radioButtons, setRadioButtons] = useState([
     { id: "1", label: "Admin", value: "admin" },
     { id: "2", label: "Güvenlik", value: "security" },
@@ -22,40 +24,43 @@ const AddUser = ({ navigation }) => {
 
   const onPressRadioButton = (selectedId) => {
     setSelectedId(selectedId);
-    const selected = radioButtons.find(button => button.id === selectedId);
+    const selected = radioButtons.find((button) => button.id === selectedId);
     if (selected) {
       setRole(selected.value);
     }
   };
 
-  const handleLogin = async () =>{
-    const user ={
+  const handleLogin = async () => {
+    const user = {
       username: userName,
       password,
-      role
-    }
+      role,
+      telNo,
+      tcNo,
+      name,
+    };
     try {
-      const response = await fetch("http://10.90.200.53/VISITORSYSTEM/createUser.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user)
-      });
-      const json =await response.json()
-      if(json.success){
-        alert("Kullanıcı Ekleme Başarılı")
+      const response = await fetch(
+        "http://10.90.200.53/VISITORSYSTEM/createUser.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        }
+      );
+      const json = await response.json();
+      if (json.success) {
+        alert("Kullanıcı Ekleme Başarılı");
         navigation.goBack();
+      } else {
+        alert("Kullanıcı Eklenemedi");
       }
-      else{
-        alert("Kullanıcı Eklenemedi")
-      }
-      
     } catch (error) {
-      alert("Hata" ,error)
-      
+      alert("Hata", error);
     }
-  }
+  };
   return (
     <View style={styles.mainContainer}>
       <View style={styles.header}>
@@ -63,6 +68,39 @@ const AddUser = ({ navigation }) => {
       </View>
 
       <View style={styles.formContainer}>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>İsim Soyisim</Text>
+          <TextInput
+            style={styles.input}
+            value={name}
+            onChangeText={setName}
+          />
+          
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>TC Kimlik No</Text>
+          <TextInput
+            style={styles.input}
+            value={tcNo}
+            keyboardType="numeric"
+            onChangeText={setTcNo}
+            maxLength={11}
+          />
+        </View>
+
+        
+       
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}> Telefon Numarası</Text>
+          <TextInput
+            style={styles.input}
+            value={telNo}
+            keyboardType="numeric"
+            onChangeText={setTelNo}
+          />
+        </View>
+        
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Kullanıcı Adı</Text>
           <TextInput
@@ -84,8 +122,8 @@ const AddUser = ({ navigation }) => {
 
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Rol</Text>
-          <RadioGroup 
-            radioButtons={radioButtons} 
+          <RadioGroup
+            radioButtons={radioButtons}
             onPress={onPressRadioButton}
             selectedId={selectedId}
             containerStyle={styles.radioGroup}
@@ -96,7 +134,10 @@ const AddUser = ({ navigation }) => {
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Kullanıcı Ekle</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={navigation.navigate("GetUser")}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("GetUser")}
+        >
           <Text style={styles.buttonText}>Kullanıcıları Listele</Text>
         </TouchableOpacity>
       </View>
@@ -126,7 +167,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   inputGroup: {
-    marginBottom: 20,
+    marginBottom:5,
   },
   input: {
     width: "100%",
@@ -141,18 +182,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: "#170242ff",
-    marginBottom: 8,
+    marginBottom: 5,
   },
   radioGroup: {
     alignItems: "flex-start",
-    marginTop: 10,
+    marginTop: 5,
   },
   button: {
     backgroundColor: "#170242ff",
     padding: 15,
     borderRadius: 8,
     alignItems: "center",
-    marginTop: 30,
+    marginTop: 10,
   },
   buttonText: {
     color: "#fff",

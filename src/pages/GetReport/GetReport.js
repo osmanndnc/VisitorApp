@@ -47,13 +47,10 @@ const GetReport = ({ navigation }) => {
       
       const fileUri = FileSystem.documentDirectory + fileName;
       
-      console.log("Rapor oluşturuluyor...", fileName);
       
       await FileSystem.writeAsStringAsync(fileUri, csvContent, {
         encoding: FileSystem.EncodingType.UTF8,
       });
-
-      console.log("Rapor başarıyla oluşturuldu:", fileUri);
 
       const isAvailable = await Sharing.isAvailableAsync();
       if (isAvailable) {

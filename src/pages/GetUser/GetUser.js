@@ -1,32 +1,42 @@
-import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+  FlatList,
+} from "react-native";
 import React, { useEffect, useState } from "react";
-import { FlatList } from "react-native-gesture-handler";
 
 const GetUser = () => {
   const [data, setData] = useState([]);
-  
+
   useEffect(() => {
     getData();
   }, []);
 
   const getData = () => {
-    fetch("http://10.90.200.53/VISITORSYSTEM/getUsers.php") // Kullanıcılar için ayrı endpoint
+    fetch("http://10.90.200.53/VISITORSYSTEM/getUser.php")
       .then((response) => response.json())
       .then((data) => {
         console.log("Kullanıcı verileri:", data);
-        if (data.success) {
+        if (Array.isArray(data)) {
+          setData(data);
+        } else if (data.success && data.data) {
           setData(data.data);
         } else {
           setData([]);
+          console.log("Beklenmeyen veri formatı:", data);
         }
       })
       .catch((error) => {
         console.error("Veri çekme hatası:", error);
         Alert.alert("Hata", "Kullanıcı verileri yüklenemedi");
+        setData([]);
       });
   };
 
-  const deleteUser = (userId, userName) => {
+  /*const deleteUser = (userName) => {
     Alert.alert(
       "Kullanıcıyı Sil",
       `${userName} kullanıcısını silmek istediğinizden emin misiniz?`,
@@ -44,13 +54,14 @@ const GetUser = () => {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ userId }),
+              body: JSON.stringify({ id: userId }),
             })
             .then((response) => response.json())
             .then((result) => {
+              console.log("Silme sonucu:", result);
               if (result.success) {
                 Alert.alert("Başarılı", "Kullanıcı başarıyla silindi");
-                getData(); // Listeyi yenile
+                getData(); 
               } else {
                 Alert.alert("Hata", result.message || "Kullanıcı silinemedi");
               }
@@ -64,16 +75,22 @@ const GetUser = () => {
       ]
     );
   };
+  */
+
+
+  
   return (
     <View style={styles.mainContainer}>
       <View style={styles.header}>
         <Text style={styles.title}>Kullanıcı Listesi</Text>
       </View>
-      
+
       <View style={styles.listContainer}>
         <FlatList
           data={data}
-          keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
+          keyExtractor={(item) =>
+            item.id?.toString() || Math.random().toString()
+          }
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             paddingBottom: 20,
@@ -84,28 +101,26 @@ const GetUser = () => {
               <View style={styles.row}>
                 <View style={styles.column}>
                   <Text style={styles.label}>Ad Soyad:</Text>
-                  <Text style={styles.value}>{item.name || item.username || "Belirtilmemiş"}</Text>
+                  <Text style={styles.value}>
+                    {item.name || item.username || "Bulunamadı"}
+                  </Text>
                 </View>
                 <View style={styles.column}>
-                  <Text style={styles.label}>Email:</Text>
-                  <Text style={styles.value}>{item.email || "Belirtilmemiş"}</Text>
+                  <Text style={styles.label}>TC No:</Text>
+                  <Text style={styles.value}>{item.tc_no || "Bulunamadı"}</Text>
                 </View>
               </View>
               <View style={styles.row}>
                 <View style={styles.column}>
-                  <Text style={styles.label}>Rol:</Text>
-                  <Text style={styles.value}>{item.role || "user"}</Text>
+                  <Text style={styles.label}>Telefon:</Text>
+                  <Text style={styles.value}>{item.phone || "Bulunamadı"}</Text>
                 </View>
                 <View style={styles.column}>
-                  <Text style={styles.label}>Kayıt Tarihi:</Text>
-                  <Text style={styles.value}>
-                    {item.created_at ? 
-                      new Date(item.created_at).toLocaleDateString("tr-TR") : 
-                      "Belirtilmemiş"}
-                  </Text>
+                  <Text style={styles.label}>Rol:</Text>
+                  <Text style={styles.value}>{item.role || "Bulunamadı"}</Text>
                 </View>
               </View>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.deleteButton}
                 onPress={() => deleteUser(item.id, item.name || item.username)}
               >
@@ -115,8 +130,12 @@ const GetUser = () => {
           )}
           ListEmptyComponent={() => (
             <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>Henüz kullanıcı bulunmamaktadır</Text>
-              <Text style={styles.emptySubText}>Yeni kullanıcı eklemek için Kullanıcı Ekle sekmesini kullanın</Text>
+              <Text style={styles.emptyText}>
+                Henüz kullanıcı bulunmamaktadır
+              </Text>
+              <Text style={styles.emptySubText}>
+                Yeni kullanıcı eklemek için Kullanıcı Ekle sekmesini kullanın
+              </Text>
             </View>
           )}
         />
@@ -132,7 +151,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f8f9fa",
     padding: 16,
-    paddingBottom: 80, // Tab Navigator için alan
+   
   },
   header: {
     marginBottom: 30,
@@ -191,13 +210,13 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   deleteButton: {
-    backgroundColor: "#dc3545",
+    backgroundColor: "#b30618ff",
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
     alignItems: "center",
     marginTop: 15,
-    shadowColor: "#dc3545",
+    shadowColor: "#b30618ff",
     shadowOffset: {
       width: 0,
       height: 2,

@@ -29,7 +29,11 @@ const Home = ({ navigation }) => {
 
       <View style={styles.listContainer}>
         <FlatList
-          data={data.filter(item => item.entry_time && item.entry_time.includes(date.toISOString().split("T")[0]))}
+          data={data.filter(
+            (item) =>
+              item.entry_time &&
+              item.entry_time.includes(date.toISOString().split("T")[0])
+          )}
           verticalScrollIndicator={false}
           renderItem={({ item }) => (
             <View style={styles.itemContainer}>
@@ -53,23 +57,23 @@ const Home = ({ navigation }) => {
                   <Text style={styles.value}>{item.plate}</Text>
                 </View>
               </View>
-              <TouchableOpacity style={styles.detail} onPress={() => navigation.navigate("Detail", { item
-       :         item })}>
-         
-                      <Text style={styles.detailText}>Detaylar</Text>
-      
-                      </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.detail}
+                onPress={() => navigation.navigate("Detail", { item: item })}
+              >
+                <Text style={styles.detailText}>Detaylar</Text>
+              </TouchableOpacity>
             </View>
           )}
         />
       </View>
 
       <View style={styles.buttonArea}>
-        <TouchableOpacity style={styles.addButton} onPress={() =>navigation.navigate("AddVisitor")}
-         >
-          <Text style=
-         {styles.addButtonText}>YENİ ZİYARETÇİ EKLE</Text>
-        
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => navigation.navigate("AddVisitor")}
+        >
+          <Text style={styles.addButtonText}>YENİ ZİYARETÇİ EKLE</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -77,4 +81,3 @@ const Home = ({ navigation }) => {
 };
 
 export default Home;
-
