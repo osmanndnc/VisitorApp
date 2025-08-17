@@ -16,7 +16,7 @@ const GetUser = () => {
   }, []);
 
   const getData = () => {
-    fetch("http://10.90.200.53/VISITORSYSTEM/getUser.php")
+    fetch("http://192.168.245.140/VISITORSYSTEM/getUser.php")
       .then((response) => response.json())
       .then((data) => {
         console.log("Kullanıcı verileri:", data);
@@ -30,55 +30,33 @@ const GetUser = () => {
         }
       })
       .catch((error) => {
-        console.error("Veri çekme hatası:", error);
         Alert.alert("Hata", "Kullanıcı verileri yüklenemedi");
         setData([]);
       });
   };
 
-  /*const deleteUser = (userName) => {
-    Alert.alert(
-      "Kullanıcıyı Sil",
-      `${userName} kullanıcısını silmek istediğinizden emin misiniz?`,
-      [
-        {
-          text: "İptal",
-          style: "cancel"
-        },
-        {
-          text: "Sil",
-          style: "destructive",
-          onPress: () => {
-            fetch("http://10.90.200.53/VISITORSYSTEM/deleteUser.php", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ id: userId }),
-            })
-            .then((response) => response.json())
-            .then((result) => {
-              console.log("Silme sonucu:", result);
-              if (result.success) {
-                Alert.alert("Başarılı", "Kullanıcı başarıyla silindi");
-                getData(); 
-              } else {
-                Alert.alert("Hata", result.message || "Kullanıcı silinemedi");
-              }
-            })
-            .catch((error) => {
-              console.error("Silme hatası:", error);
-              Alert.alert("Hata", "Kullanıcı silinirken hata oluştu");
-            });
-          }
-        }
-      ]
-    );
+  const deleteUser = (id) => {
+    fetch("http://192.168.245.140/VISITORSYSTEM/deleteUser.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id })
+    })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.success) {
+        Alert.alert("Başarılı", "Kullanıcı başarıyla silindi");
+        setData(prevData => prevData.filter(user => user.id !== id));
+      } else {
+        Alert.alert("Hata", result.message || "Kullanıcı silinirken bir hata oluştu");
+      }
+    })
+    .catch((error) => {
+      Alert.alert("Hata", "Kullanıcı silinirken bir hata oluştu");
+    });
   };
-  */
 
-
-  
   return (
     <View style={styles.mainContainer}>
       <View style={styles.header}>
@@ -122,9 +100,9 @@ const GetUser = () => {
               </View>
               <TouchableOpacity
                 style={styles.deleteButton}
-                onPress={() => deleteUser(item.id, item.name || item.username)}
+                onPress={() => deleteUser(item.id)}
               >
-                <Text style={styles.deleteButtonText}>🗑️ Kullanıcıyı Sil</Text>
+                <Text style={styles.deleteButtonText}>Kullanıcıyı Sil</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -151,7 +129,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f8f9fa",
     padding: 16,
-   
   },
   header: {
     marginBottom: 30,
@@ -216,7 +193,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
     marginTop: 15,
-    shadowColor: "#b30618ff",
+    shadowColor: "#353132ff",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -227,7 +204,7 @@ const styles = StyleSheet.create({
   },
   deleteButtonText: {
     color: "#ffffff",
-    fontSize: 14,
+    fontSize: 17,
     fontWeight: "600",
   },
   emptyContainer: {
