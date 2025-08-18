@@ -17,7 +17,7 @@ const Login = ({ navigation }) => {
   const { setIsAuthenticated, user, setUser } = useContext(AuthContext);
 
   const handleLogin = () => {
-    fetch("http://192.168.245.140/VisitorSystem/login.php", {
+    fetch("http://10.90.200.53/VisitorSystem/login.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

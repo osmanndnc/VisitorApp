@@ -1,4 +1,5 @@
 import {
+  Button,
   FlatList,
   StyleSheet,
   Text,
@@ -9,58 +10,76 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./AdminHome.style";
 import { AuthContext } from "../../context/AuthContext";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
+import {
+  MenuProvider,
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from "react-native-popup-menu";
+import { useIsFocused } from "@react-navigation/native";
+import DatePicker from "react-native-date-ranges";
 
 const AdminHome = ({ navigation }) => {
   const [data, setData] = useState([]);
-  const { setIsAuthenticated } = useContext(AuthContext);
-  const [startDate, setStartDate] = useState(new Date)
-  const [endDate, setEndDate] = useState(new Date)
-  const [isPickerVisible, setiIsPickerVisible] = useState(false)
+  const isFocussed = useIsFocused();
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   useEffect(() => {
-    getData();
-  }, []);
+    if (isFocussed) {
+      getData();
+    }
+  }, [isFocussed]);
 
   const getData = () => {
-    fetch("http://192.168.245.140/VISITORSYSTEM/getData.php")
+    fetch("http://10.90.200.53/VISITORSYSTEM/getData.php")
       .then((response) => response.json())
       .then((data) => {
+        console.log("Ziyaretçi verileri:", data);
         setData(data);
- 
       });
   };
 
-  const handleDateTime = () =>{
-    setiIsPickerVisible(true)
-    
-  }
-
   return (
-     <MenuProvider>
     <View style={styles.mainContainer}>
       <Text style={styles.title}>Ziyaretçi Listesi</Text>
-    
-     <Menu>
-      <MenuTrigger style={styles.filterArea}>
-    
-        <Ionicons
-          name="funnel-outline"
-          size={22}
-          color={"#170242ff"}
-        ></Ionicons>
-    
-  
-      </MenuTrigger>
-      <MenuOptions>
-          <MenuOption onSelect={() =>handleDateTime} text="Tarih  Seç" />
-      </MenuOptions>
-      </Menu>
-   
-      
+
+      <DatePicker
+        style={{ width: 350, height: 45 }}
+        customStyles={{
+          placeholderText: { fontSize: 20 },
+        }}
+        centerAlign
+        allowFontScaling={false}
+        markText="Tarih Seçiniz"
+        placeholder={"Filtrelemek İçin Tıklayınız"}
+        mode={"range"}
+        customButton={(onConfirm) => (
+          <Button onPress={onConfirm} title="Onayla" />
+        )}
+        onConfirm={(startDate, endDate) => {
+          setStartDate(startDate);
+          setEndDate(endDate);
+          console.log(startDate, endDate);
+        }}
+      />
+
       <View style={styles.listContainer}>
         <FlatList
-          data={data}
+          data={
+            startDate && endDate
+              ? data.filter((item) => {
+                  const entryDate = item.entry_time.split(" ")[0];
+                  const formattedStartDate = startDate.replace(/\//g, "-");
+                  const formattedEndDate = endDate.replace(/\//g, "-");
+                  return (
+                    entryDate >= formattedStartDate &&
+                    entryDate <= formattedEndDate
+                  );
+                })
+              : data
+          }
           keyExtractor={(item) => item.id.toString()}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
@@ -100,7 +119,6 @@ const AdminHome = ({ navigation }) => {
         />
       </View>
     </View>
-       </MenuProvider>
   );
 };
 

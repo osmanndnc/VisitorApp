@@ -16,7 +16,7 @@ const GetUser = () => {
   }, []);
 
   const getData = () => {
-    fetch("http://192.168.245.140/VISITORSYSTEM/getUser.php")
+    fetch("http://10.90.200.53/VISITORSYSTEM/getUser.php")
       .then((response) => response.json())
       .then((data) => {
         console.log("Kullanıcı verileri:", data);
@@ -36,7 +36,7 @@ const GetUser = () => {
   };
 
   const deleteUser = (id) => {
-    fetch("http://192.168.245.140/VISITORSYSTEM/deleteUser.php", {
+    fetch("http://10.90.200.53/VISITORSYSTEM/deleteUser.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
