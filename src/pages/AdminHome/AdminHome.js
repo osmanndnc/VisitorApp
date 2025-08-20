@@ -8,15 +8,6 @@ import {
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./AdminHome.style";
-import { AuthContext } from "../../context/AuthContext";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import {
-  MenuProvider,
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from "react-native-popup-menu";
 import { useIsFocused } from "@react-navigation/native";
 import DatePicker from "react-native-date-ranges";
 
@@ -58,10 +49,22 @@ const AdminHome = ({ navigation }) => {
         customButton={(onConfirm) => (
           <Button onPress={onConfirm} title="Onayla" />
         )}
-        onConfirm={(startDate, endDate) => {
-          setStartDate(startDate);
-          setEndDate(endDate);
-          console.log(startDate, endDate);
+        onConfirm={(dateRange) => {
+          try {
+            const startDateStr = dateRange.startDate;
+            const endDateStr = dateRange.endDate;
+            const [sYear, sMonth, sDay] = startDateStr.split("/");
+            const [eYear, eMonth, eDay] = endDateStr.split("/");
+            const sDate = new Date(`${sYear}-${sMonth}-${sDay}`);
+            const eDate = new Date(`${eYear}-${eMonth}-${eDay}`);
+            setStartDate(sDate);
+            setEndDate(eDate);
+          } catch (error) {
+            console.error("Tarih parse hatası:", error);
+          }
+        }}
+        customStyles ={{
+          headerStyle: {backgroundColor: "#2196F3"},
         }}
       />
 
@@ -70,13 +73,8 @@ const AdminHome = ({ navigation }) => {
           data={
             startDate && endDate
               ? data.filter((item) => {
-                  const entryDate = item.entry_time.split(" ")[0];
-                  const formattedStartDate = startDate.replace(/\//g, "-");
-                  const formattedEndDate = endDate.replace(/\//g, "-");
-                  return (
-                    entryDate >= formattedStartDate &&
-                    entryDate <= formattedEndDate
-                  );
+                  const entryDate = new Date(item.entry_time.split(" ")[0]);
+                  return entryDate >= startDate && entryDate <= endDate;
                 })
               : data
           }
@@ -99,10 +97,7 @@ const AdminHome = ({ navigation }) => {
                 </View>
               </View>
               <View style={styles.row}>
-                <View style={styles.column}>
-                  <Text style={styles.label}>Telefon:</Text>
-                  <Text style={styles.value}>{item.phone}</Text>
-                </View>
+              
                 <View style={styles.column}>
                   <Text style={styles.label}>Plaka:</Text>
                   <Text style={styles.value}>{item.plate}</Text>

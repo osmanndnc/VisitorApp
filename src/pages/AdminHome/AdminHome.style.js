@@ -31,6 +31,7 @@ export default StyleSheet.create({
     backgroundColor: "#ffffff",
     borderRadius: 12,
     padding: 16,
+    marginTop:12,
     marginBottom: 12,
     shadowColor: "#000",
     shadowOffset: {
