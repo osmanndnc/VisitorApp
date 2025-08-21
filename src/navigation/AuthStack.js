@@ -2,14 +2,18 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from '../pages/Login/Login';
+import MainPage from '../pages/MainPage/MainPage';
 
 const Stack = createNativeStackNavigator();
 
 const AuthStack = () => {
   return (
     <Stack.Navigator
+    initialRouteName='MainPage'
       screenOptions={{
-        headerShown: false,}}>
+        headerShown: false,
+        }}>
+          <Stack.Screen name ="MainPage" component={MainPage}/>
       <Stack.Screen name="Login" component={Login} />
         </Stack.Navigator>
 

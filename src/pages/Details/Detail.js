@@ -34,6 +34,7 @@ const Detail = ({ route, navigation }) => {
           console.log('====================================');
           console.log(data);
           console.log('====================================');
+          setData(data.visits)
           
         } else {
           Alert.alert("Hata", data.message || "Detaylar alınamadı");
@@ -63,7 +64,7 @@ const Detail = ({ route, navigation }) => {
           <Text style={styles.detailRow}>Ad Soyad: {item.name}</Text>
           <Text style={styles.detailRow}>TC Kimlik No: {item.tc_no}</Text>
           <Text style={styles.detailRow}>
-            Telefon: {data[0].phone}
+            Telefon:  {data[0].phone}
           </Text>
           <Text style={styles.detailRow}>Plaka/Türü: {item.plate}</Text>
         </View>
@@ -81,7 +82,7 @@ const Detail = ({ route, navigation }) => {
                   )
                 : data
             }
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(item, index) => `${item.entry_time}-${index}`}
             renderItem={({ item }) => (
               <View style={styles.visitBox}>
                 <Text style={styles.detailRow}>

@@ -8,6 +8,7 @@ import AddVisitor from '../pages/addVisitor/AddVisitor';
 import AdminHome from "./../pages/AdminHome/AdminHome"
 import GetReport from "./../pages/GetReport/GetReport"
 import AddUser from "./../pages/AddUser/AddUser"
+import AddDepartment from '../pages/AddDepartment/AddDepartment';
 const TabNavigation = () => {
 
     const Tabs = createBottomTabNavigator();
@@ -77,6 +78,7 @@ const TabNavigation = () => {
           ),
         }}
       />
+      
      
       <Tabs.Screen
         name="MainStack"
@@ -111,14 +113,14 @@ const TabNavigation = () => {
         }}
       />
       <Tabs.Screen
-        name="Çıkış Yap"
-        component={Logout}
+        name="Birim Ekle"
+        component={AddDepartment}
         options={{
-          tabBarLabel: "Çıkış",
+          tabBarLabel: "Birim Ekle ",
           tabBarIcon: ({ color, focused }) => (
             <View style={focused ? styles.focusedTab : styles.normalTab}>
               <Ionicons 
-                name="log-out-outline" 
+                name="add-circle-sharp"
                 size={focused ? 26 : 22} 
                 color={focused ? "#ffffff" : color} 
               />

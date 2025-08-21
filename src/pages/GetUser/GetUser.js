@@ -66,8 +66,8 @@ const GetUser = () => {
       <View style={styles.listContainer}>
         <FlatList
           data={data}
-          keyExtractor={(item) =>
-            item.id?.toString() || Math.random().toString()
+          keyExtractor={(item, index) =>
+            item.id?.toString() || `user-${index}`
           }
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
