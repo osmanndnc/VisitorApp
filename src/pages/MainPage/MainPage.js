@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 
-const MainPage = ({navigation}) => {
+const MainPage = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image
@@ -12,10 +12,16 @@ const MainPage = ({navigation}) => {
         <Text style={styles.titleText}>Atatürk Üniversitesi</Text>
         <Text style={styles.titleText}>Elektronik Ziyaretçi Kayıt Sistemi</Text>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Appointment")}
+        >
           <Text style={styles.buttonText}>Ziyaret Kaydı Oluştur</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Login")}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Login")}
+        >
           <Text style={styles.buttonText}>Personel Girişi</Text>
         </TouchableOpacity>
       </View>

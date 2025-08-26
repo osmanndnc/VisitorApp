@@ -9,6 +9,9 @@ import AdminHome from "./../pages/AdminHome/AdminHome"
 import GetReport from "./../pages/GetReport/GetReport"
 import AddUser from "./../pages/AddUser/AddUser"
 import AddDepartment from '../pages/AddDepartment/AddDepartment';
+import AddPerson from '../pages/AddPerson/AddPerson';
+import MainAdd from '../pages/MainAdd/MainAdd';
+import GetUser from '../pages/GetUser/GetUser';
 const TabNavigation = () => {
 
     const Tabs = createBottomTabNavigator();
@@ -62,22 +65,7 @@ const TabNavigation = () => {
           ),
         }}
       />
-      <Tabs.Screen
-        name="Ziyaretçi Ekle"
-        component={AddVisitor}
-        options={{
-          tabBarLabel: "Ziyaretçi",
-          tabBarIcon: ({ color, focused }) => (
-            <View style={focused ? styles.focusedTab : styles.normalTab}>
-              <Ionicons 
-                name="person-add" 
-                size={focused ? 26 : 22} 
-                color={focused ? "#ffffff" : color} 
-              />
-            </View>
-          ),
-        }}
-      />
+      
       
      
       <Tabs.Screen
@@ -97,10 +85,10 @@ const TabNavigation = () => {
         }}
       />
       <Tabs.Screen
-        name="Kullanıcı Ekle"
-        component={AddUser}
+        name="Kullanıcılar"
+        component={GetUser}
         options={{
-          tabBarLabel: "Kullanıcı",
+          tabBarLabel: "Kullanıcılar",
           tabBarIcon: ({ color, focused }) => (
             <View style={focused ? styles.focusedTab : styles.normalTab}>
               <Ionicons 
@@ -113,10 +101,10 @@ const TabNavigation = () => {
         }}
       />
       <Tabs.Screen
-        name="Birim Ekle"
-        component={AddDepartment}
+        name="Ekle"
+        component={MainAdd}
         options={{
-          tabBarLabel: "Birim Ekle ",
+          tabBarLabel: "Ekle ",
           tabBarIcon: ({ color, focused }) => (
             <View style={focused ? styles.focusedTab : styles.normalTab}>
               <Ionicons 

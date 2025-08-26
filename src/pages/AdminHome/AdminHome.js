@@ -34,8 +34,17 @@ const AdminHome = ({ navigation }) => {
 
   return (
     <View style={styles.mainContainer}>
-      <Text style={styles.title}>Ziyaretçi Listesi</Text>
-
+      <View style={styles.header}>
+        <View style={styles.headerLeft} />
+        <View style={styles.headerCenter}>
+          <Text style={styles.title}>Ziyaretçi Listesi</Text>
+        </View>
+        <View style={styles.headerRight}>
+          <TouchableOpacity onPress={() => navigation.navigate("LogOut")}>
+            <Text style={styles.logoutText}>Çıkış</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
       <DatePicker
         style={{ width: 350, height: 45 }}
         customStyles={{
@@ -63,8 +72,8 @@ const AdminHome = ({ navigation }) => {
             console.error("Tarih parse hatası:", error);
           }
         }}
-        customStyles ={{
-          headerStyle: {backgroundColor: "#2196F3"},
+        customStyles={{
+          headerStyle: { backgroundColor: "#2196F3" },
         }}
       />
 
@@ -97,7 +106,6 @@ const AdminHome = ({ navigation }) => {
                 </View>
               </View>
               <View style={styles.row}>
-              
                 <View style={styles.column}>
                   <Text style={styles.label}>Plaka:</Text>
                   <Text style={styles.value}>{item.plate}</Text>

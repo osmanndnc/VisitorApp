@@ -2,23 +2,23 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
+  TouchableOpacity,
+  ScrollView,
   Alert,
 } from "react-native";
-import React, { useState, useContext, useEffect } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React, { useState, useEffect } from "react";
 import { Picker } from "@react-native-picker/picker";
 
-const AddVisitor = ({ navigation }) => {
-  const { user } = useContext(AuthContext);
+const Appointment = ({ navigation }) => {
   const [name, setName] = useState("");
-  const [tc_no, setTc_no] = useState("");
-  const [tel_no, setTel_no] = useState("");
-  const [plate, setPlate] = useState("");
-  const [person_to_visit, setPerson_To_Visit] = useState("");
+  const [tcNo, setTcNo] = useState("");
+  const [phone, setPhone] = useState("");
+  const [selectedPerson, setSelectedPerson] = useState("");
   const [purpose, setPurpose] = useState("");
-  const [person, setPerson] = useState([]);
+  const [plateNumber, setPlateNumber] = useState("");
+  const [persons, setPersons] = useState([]);
+
   useEffect(() => {
     getPersons();
   }, []);
@@ -29,7 +29,7 @@ const AddVisitor = ({ navigation }) => {
       .then((data) => {
         console.log("Kişiler yüklendi:", data.persons);
         if (data.success) {
-          setPerson(data.persons);
+          setPersons(data.persons);
         }
       })
       .catch((error) => {
@@ -37,63 +37,64 @@ const AddVisitor = ({ navigation }) => {
       });
   };
 
-  const handlerAddVisitor = async () => {
-    console.log("Kullanıcı bilgisi:", user);
-    const visitorData = {
-      name,
-      tc_no,
-      tel_no,
-      plate,
-      person_to_visit,
-      purpose,
-      approved_by: user?.id || 1,
-    };
-    console.log("Gönderilen veri:", visitorData);
-    try {
-      const response = await fetch(
-        "http://10.90.200.53/VISITORSYSTEM/createData.php",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(visitorData),
-        }
-      );
-
-      const json = await response.json();
-      if (json.success) {
-        Alert.alert("Başarılı", json.message);
-        navigation.goBack();
-      } else {
-        Alert.alert("Hata", json.message);
-      }
-    } catch (error) {
-      console.error("İstek hatası:", error);
-      Alert.alert("Hata", "Sunucuya bağlanılamadı");
+  const handleSubmit = () => {
+    if (!name || !tcNo || !phone || !selectedPerson || !purpose) {
+      Alert.alert("Hata", "Lütfen tüm alanları doldurun");
+      return;
     }
+
+    const appointmentData = {
+      name,
+      tc_no: tcNo,
+      phone,
+      person_to_visit: selectedPerson,
+      purpose,
+      plate: plateNumber,
+    };
+
+    fetch("http://10.90.200.53/VISITORSYSTEM/createAppointment.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(appointmentData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          Alert.alert("Başarılı", "Randevu oluşturuldu", [
+            { text: "Tamam", onPress: () => navigation.goBack() },
+          ]);
+        } else {
+          Alert.alert("Hata", data.message || "Randevu oluşturulamadı");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        Alert.alert("Hata", "Sunucuya bağlanılamadı");
+      });
   };
 
   return (
     <View style={styles.mainContainer}>
       <View style={styles.header}>
-        <Text style={styles.title}>Yeni Ziyaretçi Ekle</Text>
+        <Text style={styles.title}>Yeni Randevu Oluştur</Text>
       </View>
 
       <View style={styles.formContainer}>
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Ad Soyad</Text>
+          <Text style={styles.label}>İsim Soyisim</Text>
           <TextInput style={styles.input} value={name} onChangeText={setName} />
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>TC Kimlik Numarası</Text>
+          <Text style={styles.label}>TC Kimlik No</Text>
           <TextInput
             style={styles.input}
-            inputMode="numeric"
+            value={tcNo}
+            onChangeText={setTcNo}
+            keyboardType="numeric"
             maxLength={11}
-            value={tc_no}
-            onChangeText={setTc_no}
           />
         </View>
 
@@ -101,40 +102,42 @@ const AddVisitor = ({ navigation }) => {
           <Text style={styles.label}>Telefon Numarası</Text>
           <TextInput
             style={styles.input}
-            value={tel_no}
-            onChangeText={setTel_no}
+            value={phone}
+            onChangeText={setPhone}
             keyboardType="phone-pad"
-            maxLength={10}
+            maxLength={11}
           />
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Plaka</Text>
+          <Text style={styles.label}>Plaka Numarası</Text>
           <TextInput
             style={styles.input}
-            value={plate}
-            maxLength={8}
-            onChangeText={setPlate}
+            value={plateNumber}
+            onChangeText={setPlateNumber}
           />
         </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Ziyaret Edilecek Kişi</Text>
           <View style={styles.pickerContainer}>
-            <Text style={styles.label}>Ziyaret Edilecek Kişi</Text>
             <Picker
-              selectedValue={person_to_visit}
+              selectedValue={selectedPerson}
               style={styles.picker}
-              onValueChange={setPerson_To_Visit}
+              onValueChange={setSelectedPerson}
               mode="dropdown"
             >
               <Picker.Item label="Bir kişi seçin..." value="" />
-              {person.map((personItem) => (
+              {persons.map((person) => (
                 <Picker.Item
-                  key={personItem.id}
-                  label={personItem.name}
-                  value={personItem.name}
+                  key={person.id}
+                  label={person.name}
+                  value={person.name}
                 />
               ))}
             </Picker>
           </View>
+        </View>
 
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Ziyaret Sebebi</Text>
@@ -148,15 +151,15 @@ const AddVisitor = ({ navigation }) => {
       </View>
 
       <View style={styles.buttonArea}>
-        <TouchableOpacity style={styles.addButton} onPress={handlerAddVisitor}>
-          <Text style={styles.addButtonText}>ZİYARETÇİ EKLE</Text>
+        <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
+          <Text style={styles.addButtonText}>RANDEVU OLUŞTUR</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-export default AddVisitor;
+export default Appointment;
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -190,6 +193,23 @@ const styles = StyleSheet.create({
     color: "#170242ff",
     marginBottom: 8,
   },
+  input: {
+    height: 50,
+    backgroundColor: "#ffffff",
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 3,
+    elevation: 2,
+  },
   pickerContainer: {
     height: 50,
     backgroundColor: "#ffffff",
@@ -207,23 +227,6 @@ const styles = StyleSheet.create({
   },
   picker: {
     height: 50,
-  },
-  input: {
-    height: 50,
-    backgroundColor: "#ffffff",
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    fontSize: 16,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.08,
-    shadowRadius: 3,
-    elevation: 2,
   },
   buttonArea: {
     paddingHorizontal: 20,

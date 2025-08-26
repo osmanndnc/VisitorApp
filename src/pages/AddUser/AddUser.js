@@ -134,12 +134,7 @@ const AddUser = ({ navigation }) => {
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Kullanıcı Ekle</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("GetUser")}
-        >
-          <Text style={styles.buttonText}>Kullanıcıları Listele</Text>
-        </TouchableOpacity>
+        
       </View>
     </View>
   );
@@ -165,6 +160,7 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
+    marginTop: 20,
   },
   inputGroup: {
     marginBottom:5,
@@ -193,7 +189,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 8,
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 30,
   },
   buttonText: {
     color: "#fff",

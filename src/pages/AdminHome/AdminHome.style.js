@@ -7,6 +7,34 @@ export default StyleSheet.create({
     padding: 16,
     paddingBottom: 0,  
   },
+  header:{
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  headerLeft:{
+    flex: 1,
+  },
+  headerCenter: {
+    flex: 2,
+    alignItems: "center",
+  },
+  headerRight: {
+    flex: 1,
+    alignItems: "flex-end",
+    marginTop: 30,
+    backgroundColor: "#b30618ff",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius:20,
+marginLeft:10  },
+  logoutText: {
+    color: "#ffffffff",
+    fontWeight: "bold",
+    fontSize: 16,
+    textAlign: "center",
+  },
   title: {
     fontSize: 24,
     fontWeight: "bold",
