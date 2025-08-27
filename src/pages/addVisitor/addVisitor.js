@@ -117,8 +117,10 @@ const AddVisitor = ({ navigation }) => {
             onChangeText={setPlate}
           />
         </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Ziyaret Edilecek Kişi</Text>
           <View style={styles.pickerContainer}>
-            <Text style={styles.label}>Ziyaret Edilecek Kişi</Text>
             <Picker
               selectedValue={person_to_visit}
               style={styles.picker}
@@ -135,6 +137,7 @@ const AddVisitor = ({ navigation }) => {
               ))}
             </Picker>
           </View>
+        </View>
 
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Ziyaret Sebebi</Text>

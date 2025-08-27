@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Logout from "../pages/Logout/Logout";
@@ -12,6 +13,20 @@ import AddDepartment from '../pages/AddDepartment/AddDepartment';
 import AddPerson from '../pages/AddPerson/AddPerson';
 import MainAdd from '../pages/MainAdd/MainAdd';
 import GetUser from '../pages/GetUser/GetUser';
+
+const Stack = createNativeStackNavigator();
+
+const AddStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="MainAddScreen" component={MainAdd} />
+      <Stack.Screen name="AddVisitor" component={AddVisitor} />
+      <Stack.Screen name="AddUser" component={AddUser} />
+      <Stack.Screen name="AddPerson" component={AddPerson} />
+      <Stack.Screen name="AddDepartment" component={AddDepartment} />
+    </Stack.Navigator>
+  );
+};
 const TabNavigation = () => {
 
     const Tabs = createBottomTabNavigator();
@@ -102,7 +117,7 @@ const TabNavigation = () => {
       />
       <Tabs.Screen
         name="Ekle"
-        component={MainAdd}
+        component={AddStack}
         options={{
           tabBarLabel: "Ekle ",
           tabBarIcon: ({ color, focused }) => (

@@ -7,9 +7,7 @@ const MainAdd = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Yeni Kayıt</Text>
-        <Text style={styles.subtitle}>
-          Eklemek istediğiniz kayıt türünü seçin
-        </Text>
+       
       </View>
 
       <View style={styles.menuContainer}>
@@ -58,6 +56,21 @@ const MainAdd = ({ navigation }) => {
             <Text style={styles.menuTitle}>Kişi Ekle</Text>
             <Text style={styles.menuSubtitle}>
               Ziyaret edilecek kişi ekleyin
+            </Text>
+          </View>
+          <Ionicons name="chevron-forward" size={20} color="#999" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => navigation.navigate("AddDepartment")}
+        >
+          <View style={[styles.iconContainer, { backgroundColor: "#e58e0bff" }]}>
+            <Ionicons name="business-sharp" size={28} color="#fff" />
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.menuTitle}>Birim Ekle</Text>
+            <Text style={styles.menuSubtitle}>
+              Yeni birim ekleyin
             </Text>
           </View>
           <Ionicons name="chevron-forward" size={20} color="#999" />

@@ -130,7 +130,7 @@ const AddUser = ({ navigation }) => {
             layout="row"
           />
         </View>
-
+       
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Kullanıcı Ekle</Text>
         </TouchableOpacity>

@@ -31,11 +31,7 @@ const Detail = ({ route, navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          console.log('====================================');
-          console.log(data);
-          console.log('====================================');
-          setData(data.visits)
-          
+          setData(data.visits);
         } else {
           Alert.alert("Hata", data.message || "Detaylar alınamadı");
         }
@@ -63,9 +59,6 @@ const Detail = ({ route, navigation }) => {
         <View style={styles.visitorBox}>
           <Text style={styles.detailRow}>Ad Soyad: {item.name}</Text>
           <Text style={styles.detailRow}>TC Kimlik No: {item.tc_no}</Text>
-          <Text style={styles.detailRow}>
-            Telefon:  {data[0].phone}
-          </Text>
           <Text style={styles.detailRow}>Plaka/Türü: {item.plate}</Text>
         </View>
 
@@ -94,6 +87,8 @@ const Detail = ({ route, navigation }) => {
                 <Text style={styles.detailRow}>
                   Ziyaret Amacı: {item.purpose}
                 </Text>
+                <Text style={styles.detailRow}>Telefon: {data[0]?.phone || 'Bilgi Yok'}</Text>
+
               </View>
             )}
             showsVerticalScrollIndicator={false}

@@ -76,6 +76,10 @@ const AdminHome = ({ navigation }) => {
           headerStyle: { backgroundColor: "#2196F3" },
         }}
       />
+      <Text style={styles.recordCount}>Bulunan Kayıt Sayısı : {startDate && endDate ? data.filter((item) => {
+        const entryDate = new Date(item.entry_time.split(" ")[0]);
+        return entryDate >= startDate && entryDate <= endDate;
+      }).length : data.length}</Text>
 
       <View style={styles.listContainer}>
         <FlatList
@@ -87,7 +91,7 @@ const AdminHome = ({ navigation }) => {
                 })
               : data
           }
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item, index) => `${item.id}-${index}`}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             paddingBottom: 10,

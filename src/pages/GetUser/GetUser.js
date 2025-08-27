@@ -67,7 +67,7 @@ const GetUser = () => {
         <FlatList
           data={data}
           keyExtractor={(item, index) =>
-            item.id?.toString() || `user-${index}`
+            `user-${item.id || index}-${index}`
           }
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{

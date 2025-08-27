@@ -6,15 +6,18 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
+import { Picker } from "@react-native-picker/picker";
 
 const AddPerson = ({ navigation }) => {
   const [name, setName] = useState("");
   const [mail,setMail]=useState("");
-
-  const handleLogin = async () => {
+  const [depart, setDepart] = useState("");
+  
+  const handleCreate = async () => {
     const person = {
       name,
       mail,
+      department: depart,
     };
     try {
       const response = await fetch(
@@ -56,9 +59,23 @@ const AddPerson = ({ navigation }) => {
             value={mail}
             onChangeText={setMail}
           />
-        </View> 
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Kullanıcı Ekle</Text>
+        </View>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Birim</Text>
+          <View style={styles.pickerContainer}>
+                    <Picker
+                      selectedValue={depart}
+                      style={styles.picker}
+                      onValueChange={setDepart}
+                      mode="dropdown"
+                    >
+                    
+                    </Picker>
+                  </View>
+        </View>
+        
+        <TouchableOpacity style={styles.button} onPress={handleCreate}>
+          <Text style={styles.buttonText}>Kişi Ekle</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -107,6 +124,17 @@ const styles = StyleSheet.create({
   radioGroup: {
     alignItems: "flex-start",
     marginTop: 5,
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    backgroundColor: "#f9f9f9",
+    marginBottom: 10,
+  },
+  picker: {
+    height: 50,
+    width: "100%",
   },
   button: {
     backgroundColor: "#170242ff",
